@@ -25,7 +25,11 @@ int main()
 	int black;
 	FILE *outFile;
 	gdIOCtx *out;
+#ifdef __OS2__
+	size_t length;
+#else
 	off_t length;
+#endif
 
 	/* create the test image */
 	im = gdImageCreate(11, 11);

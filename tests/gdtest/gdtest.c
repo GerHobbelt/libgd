@@ -56,7 +56,7 @@ gdImagePtr gdTestImageFromPng(const char *filename)
 
 	/* If the path is relative, then assume it's in the tests/ dir. */
 	if (filename[0] == '/' || filename[0] == '.'
-#ifdef _WIN32
+#if defined(_WIN32) || defined(__OS2__)
 	|| filename[1] == ':'
 #endif
 	) {

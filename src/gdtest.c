@@ -6,11 +6,6 @@
 #include <stdlib.h>
 #ifdef _WIN32
 #include <process.h>
-int
-unlink (const char *filename)
-{
-	return _unlink (filename);
-}
 #else
 #include <unistd.h>		/* for getpid(), unlink() */
 #endif

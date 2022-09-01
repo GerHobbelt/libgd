@@ -29,7 +29,7 @@ typedef struct {
 	HANDLE handle;				/* _findfirst/_findnext handle */
 	int offset;					/* offset into directory */
 	short finished;				/* 1 if there are not more files */
-	WIN32_FIND_DATA fileinfo;	/* from _findfirst/_findnext */
+	WIN32_FIND_DATAA fileinfo;	/* from _findfirst/_findnext */
 	char *dir;					/* the dir we are reading */
 	struct dirent dent;			/* the dirent to return */
 } DIR;

@@ -7,6 +7,8 @@
 #include <string.h>
 #include "gd.h"
 
+#ifndef _WIN32
+
 /* A neat little utility which adds freetype text to
  * existing JPEG images. Type annotate -h for instructions.
  * Thanks to Joel Dubiner for supporting this work. -TBB
@@ -194,3 +196,5 @@ badLine:
 	fclose(out);
 	return 0;
 }
+
+#endif

@@ -13,6 +13,13 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
+#ifdef HAVE_MUPDF
+#include "mupdf/fitz.h"
+
+#define optind  fz_optind
+#define optarg  fz_optarg
+#define getopt  fz_getopt
+#endif
 
 #include "gd.h"
 
@@ -23,7 +30,7 @@ static void usage() {
 
 int main(int argc, char **argv)
 {
-	gdImagePtr im;
+	gdImagePtr im = 0;
 	FILE *in, *out;
 	int c;
 	int speed = -1, quality = -1; // use default values if unspecified

@@ -11,7 +11,6 @@
 
 int main() {
 	FILE *fp;
-	int retval;
 	gdImagePtr realIm, badIm;
 	void *rv;
 	int size;

@@ -7,6 +7,7 @@
 #include "gdtest.h"
 
 static const unsigned char pngdata[93];
+
 int main(void)
 {
 	gdImagePtr im;

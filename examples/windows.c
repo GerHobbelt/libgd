@@ -174,7 +174,7 @@ void gdDrawImage(HDC hdc, RECT *rc)
 	// Create memory device context
 	mem_dc = CreateCompatibleDC(hdc);
 	if (!mem_dc) {
-		MessageBox(NULL, "Can't create a compatible DC!", "Error!", MB_ICONEXCLAMATION | MB_OK);
+		MessageBoxA(NULL, "Can't create a compatible DC!", "Error!", MB_ICONEXCLAMATION | MB_OK);
 		return;
 	}
 
@@ -195,7 +195,7 @@ void gdDrawImage(HDC hdc, RECT *rc)
 	// Negative stride places 0,0 in upper-left corner
 	im = gdImageTrueColorAttachBuffer((int*)bits, width, height, -stride);
 	if (!im) {
-		MessageBox(NULL, "GD image creation failed!", "Error!", MB_ICONEXCLAMATION | MB_OK);
+		MessageBoxA(NULL, "GD image creation failed!", "Error!", MB_ICONEXCLAMATION | MB_OK);
 		return;
 	}
 

@@ -47,7 +47,7 @@ DIR *opendir(const char *path)
 	dp->offset = 0;
 	dp->finished = 0;
 
-	if ((handle = FindFirstFile(filespec, &(dp->fileinfo))) == INVALID_HANDLE_VALUE) {
+	if ((handle = FindFirstFileA(filespec, &(dp->fileinfo))) == INVALID_HANDLE_VALUE) {
 		DWORD err = GetLastError();
 		if (err == ERROR_NO_MORE_FILES || err == ERROR_FILE_NOT_FOUND) {
 			dp->finished = 1;
@@ -95,7 +95,7 @@ struct dirent *readdir(DIR *dp)
 		return NULL;
 
 	if (dp->offset != 0) {
-		if (FindNextFile(dp->handle, &(dp->fileinfo)) == 0) {
+		if (FindNextFileA(dp->handle, &(dp->fileinfo)) == 0) {
 			dp->finished = 1;
 			return NULL;
 		}
@@ -118,7 +118,7 @@ int readdir_r(DIR *dp, struct dirent *entry, struct dirent **result)
 	}
 
 	if (dp->offset != 0) {
-		if (FindNextFile(dp->handle, &(dp->fileinfo)) == 0) {
+		if (FindNextFileA(dp->handle, &(dp->fileinfo)) == 0) {
 			dp->finished = 1;
 			*result = NULL;
 			return 0;
@@ -179,7 +179,7 @@ int rewinddir(DIR *dp)
 		filespec[index] = '\0';
 	strcat(filespec, "/*");
 
-	if ((handle = FindFirstFile(filespec, &(dp->fileinfo))) == INVALID_HANDLE_VALUE) {
+	if ((handle = FindFirstFileA(filespec, &(dp->fileinfo))) == INVALID_HANDLE_VALUE) {
 		dp->finished = 1;
 	}
 

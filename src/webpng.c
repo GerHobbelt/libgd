@@ -11,6 +11,14 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
+#ifdef HAVE_MUPDF
+#include "mupdf/fitz.h"
+
+#define optind  fz_optind
+#define optarg  fz_optarg
+#define getopt  fz_getopt
+static int opterr = 0;
+#endif
 
 #ifdef __clang__
 /* Workaround broken clang behavior: https://llvm.org/bugs/show_bug.cgi?id=20144 */

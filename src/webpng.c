@@ -72,7 +72,7 @@ main(int argc, char **argv)
 	FILE *in;
 	FILE *out;
 	const char *infile;
-	char *tmpfile;
+	char *tmpfile = NULL;
 	int i;
 	int use_stdin_stdout = 0;
 

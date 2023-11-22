@@ -21,7 +21,7 @@
 #define MINY(x) MIN4(x[1],x[3],x[5],x[7])
 
 int
-main (int argc, char *argv[])
+main (int argc, const char *argv[])
 {
 	gdImagePtr im;
 	int blue;

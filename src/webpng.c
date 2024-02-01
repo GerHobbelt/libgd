@@ -266,13 +266,23 @@ main(int argc, char **argv)
 		size_t len = filelen + 8;
 		int outfd;
 
-		tmpfile = malloc(len);
+		tmpfile = calloc(1, len);
 		if (tmpfile == NULL)
 			err("could not create a tempfile");
 		memcpy(tmpfile, infile, filelen);
 		strcpy(tmpfile + filelen, ".XXXXXX");
 
+#ifdef _WIN32
+		outfd = _mktemp_s(tmpfile, len);
+		if (outfd == 0) {
+			outfd = _creat(tmpfile, _S_IREAD | _S_IWRITE);
+		}
+		else {
+			outfd = -1;
+		}
+#else
 		outfd = mkstemp(tmpfile);
+#endif
 		if (outfd == -1)
 			err("could not open %s", tmpfile);
 

@@ -21,7 +21,7 @@
 #define MINY(x) MIN4(x[1],x[3],x[5],x[7])
 
 int
-main (int argc, const char *argv[])
+main (int argc, const char **argv)
 {
 	gdImagePtr im;
 	int blue;
@@ -43,7 +43,7 @@ main (int argc, const char *argv[])
 #else
 	double angle = DEG2RAD (90);
 #endif
-	char *f;
+	const char *f;
 	if (argc == 2) {
 		f = argv[1];
 	} else {

@@ -12,8 +12,13 @@
    basis image that must be loaded quickly. The .gd format
    is not intended to be a general-purpose format. */
 
+
+#if defined(BUILD_MONOLITHIC)
+#define main          gd_time_main
+#endif
+
 int
-main (int argc, char **argv)
+main(int argc, const char** argv)
 {
 	gdImagePtr im;
 	FILE *in;
@@ -24,7 +29,7 @@ main (int argc, char **argv)
 
 	if (argc != 7) {
 		fprintf(stderr, "Usage: gd2time filename.gd count x y w h\n");
-		exit (1);
+		return 1;
 	}
 
 	c = atoi (argv[2]);
@@ -41,7 +46,7 @@ main (int argc, char **argv)
 		in = fopen (argv[1], "rb");
 		if (!in) {
 			fprintf(stderr, "Input file does not exist!\n");
-			exit (1);
+			return 1;
 		}
 
 		im = gdImageCreateFromGd2Part (in, x, y, w, h);
@@ -49,7 +54,7 @@ main (int argc, char **argv)
 
 		if (!im) {
 			fprintf(stderr, "Error reading source file!\n");
-			exit (1);
+			return 1;
 		}
 		gdImageDestroy (im);
 	};

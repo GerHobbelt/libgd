@@ -563,8 +563,13 @@ strwidth (unsigned char *s)
 }
 
 #ifdef DEBUG
+
+#if defined(BUILD_MONOLITHIC)
+#define main          gd_kanji_main
+#endif
+
 int
-main ()
+main(void)
 {
 	unsigned char input[BUFSIZ];
 	unsigned char *output;

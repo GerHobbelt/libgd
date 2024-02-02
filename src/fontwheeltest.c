@@ -6,7 +6,7 @@
 #include "gd.h"
 #define DEGTORAD(x) ( (x) * (2.0 * 3.14159265) / 360.0 )
 
-void
+static void
 doerr (FILE * err, const char *msg)
 {
 	if (err) {
@@ -15,7 +15,7 @@ doerr (FILE * err, const char *msg)
 	}
 }
 
-void
+static void
 dowheel (gdImagePtr im, int color, char *fontfile, int fontsize,
          double angle, int x, int y, int offset, char *string)
 {
@@ -48,7 +48,7 @@ dowheel (gdImagePtr im, int color, char *fontfile, int fontsize,
 }
 
 #if 0
-void
+static void
 dolines (gdImagePtr im, int color, double incr, int x, int y, int offset,
          int length)
 {
@@ -66,7 +66,7 @@ dolines (gdImagePtr im, int color, double incr, int x, int y, int offset,
 }
 #endif
 
-void
+static void
 dotest (char *font, int size, double incr,
         int w, int h, char *string, const char *filename)
 {
@@ -105,6 +105,11 @@ dotest (char *font, int size, double incr,
 
 	fclose (out);
 }
+
+
+#if defined(BUILD_MONOLITHIC)
+#define main          gd_fontwheel_main
+#endif
 
 int
 main(void)

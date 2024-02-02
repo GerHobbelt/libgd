@@ -4,6 +4,11 @@
 
 #include "gd.h"
 
+
+#if defined(BUILD_MONOLITHIC)
+#define main          gd_gifanimtest_main
+#endif
+
 int main(void)
 {
 	gdImagePtr im;

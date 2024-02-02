@@ -308,7 +308,13 @@ int getin(void *in)
 /* Main function
  * -------------
  */
-int main(int argc, char *argv[])
+
+
+#if defined(BUILD_MONOLITHIC)
+#define main          gd_testac_main
+#endif
+
+int main(int argc, const char **argv)
 {
 	FILE *wbmp_file;
 	Wbmp *wbmp;

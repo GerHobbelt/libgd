@@ -8,6 +8,11 @@
 #define FALSE 0
 #define TRUE (!FALSE)
 
+
+#if defined(BUILD_MONOLITHIC)
+#define main          gd_testtr_main
+#endif
+
 int
 main(void)
 {

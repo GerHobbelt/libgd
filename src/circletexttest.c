@@ -5,6 +5,11 @@
 #include <stdio.h>
 #include "gd.h"
 
+
+#if defined(BUILD_MONOLITHIC)
+#define main          gd_circletexttest_main
+#endif
+
 int main(void)
 {
 	/* 2.0.22: can't depend on PNG either  */

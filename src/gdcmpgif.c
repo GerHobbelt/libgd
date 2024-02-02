@@ -18,39 +18,44 @@
 static void CompareImages(char *msg, gdImagePtr im1, gdImagePtr im2);
 
 
-int main(int argc, char **argv)
+#if defined(BUILD_MONOLITHIC)
+#define main          gd_cmpgif_main
+#endif
+
+int
+main(int argc, const char** argv)
 {
 	gdImagePtr im1, im2;
 	FILE *in;
 
 	if (argc != 3) {
 		fprintf(stderr, "Usage: gdcmpgif filename.gif filename.gif\n");
-		exit(1);
+		return 1;
 	}
 	in = fopen(argv[1], "rb");
 	if (!in) {
 		fprintf(stderr, "Input file does not exist!\n");
-		exit(1);
+		return 1;
 	}
 	im1 = gdImageCreateFromGif(in);
 	fclose(in);
 
 	if (!im1) {
 		fprintf(stderr, "Input is not in GIF format!\n");
-		exit(1);
+		return 1;
 	}
 
 	in = fopen(argv[2], "rb");
 	if (!in) {
 		fprintf(stderr, "Input file 2 does not exist!\n");
-		exit(1);
+		return 1;
 	}
 	im2 = gdImageCreateFromGif(in);
 	fclose(in);
 
 	if (!im2) {
 		fprintf(stderr, "Input 2 is not in GIF format!\n");
-		exit(1);
+		return 1;
 	}
 
 	CompareImages("gdcmpgif", im1, im2);

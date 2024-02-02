@@ -4,7 +4,7 @@
 
 #include "gd.h"
 
-void
+static void
 dosizes (gdImagePtr im, int color, char *fontfile,
          int x, int y, const char *string)
 {
@@ -35,7 +35,7 @@ dosizes (gdImagePtr im, int color, char *fontfile,
 	}
 }
 
-void
+static void
 dotest (char *font, int w, int h, char *string, const char *filename)
 {
 	gdImagePtr im;
@@ -61,6 +61,11 @@ dotest (char *font, int w, int h, char *string, const char *filename)
 #endif
 	fclose (out);
 }
+
+
+#if defined(BUILD_MONOLITHIC)
+#define main          gd_fontsizetest_main
+#endif
 
 int
 main(void)

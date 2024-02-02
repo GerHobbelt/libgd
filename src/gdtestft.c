@@ -20,8 +20,13 @@
 #define MAXY(x) MAX4(x[1],x[3],x[5],x[7])
 #define MINY(x) MIN4(x[1],x[3],x[5],x[7])
 
+
+#if defined(BUILD_MONOLITHIC)
+#define main          gd_testft_main
+#endif
+
 int
-main (int argc, const char **argv)
+main(int argc, const char** argv)
 {
 	gdImagePtr im;
 	int blue;

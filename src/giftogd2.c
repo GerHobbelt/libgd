@@ -12,7 +12,13 @@
 	basis image that must be loaded quickly. The .gd format
 	is not intended to be a general-purpose format. */
 
-int main(int argc, char **argv)
+
+#if defined(BUILD_MONOLITHIC)
+#define main          gd_giftogd2_main
+#endif
+
+int
+main(int argc, const char** argv)
 {
 	gdImagePtr im;
 	FILE *in, *out;
@@ -22,24 +28,24 @@ int main(int argc, char **argv)
 		fprintf(stderr, "Usage: giftogd2 filename.gif filename.gd2 cs fmt\n");
 		fprintf(stderr, "       where cs is the chunk size\n");
 		fprintf(stderr, "	fmt is 1 for raw, 2 for compressed\n");
-		exit(1);
+		return 1;
 	}
 	in = fopen(argv[1], "rb");
 	if (!in) {
 		fprintf(stderr, "Input file does not exist!\n");
-		exit(1);
+		return 1;
 	}
 	im = gdImageCreateFromGif(in);
 	fclose(in);
 	if (!im) {
 		fprintf(stderr, "Input is not in GIF format!\n");
-		exit(1);
+		return 1;
 	}
 	out = fopen(argv[2], "wb");
 	if (!out) {
 		fprintf(stderr, "Output file cannot be written to!\n");
 		gdImageDestroy(im);
-		exit(1);
+		return 1;
 	}
 	cs = atoi(argv[3]);
 	fmt = atoi(argv[4]);

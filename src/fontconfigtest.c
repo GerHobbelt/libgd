@@ -4,7 +4,13 @@
 
 #include "gd.h"
 
-int main (int argc, char *argv[])
+
+#if defined(BUILD_MONOLITHIC)
+#define main          gd_fontconfigtest_main
+#endif
+
+int
+main(int argc, const char** argv)
 {
 	gdImagePtr im;
 	int green, blue;

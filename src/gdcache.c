@@ -199,14 +199,21 @@ static void cacheRelease(void *map)
 	gdFree((char *)map);
 }
 
-int main(int argc, char **argv)
+
+#if defined(BUILD_MONOLITHIC)
+#define main          gd_testcache_main
+#endif
+
+int
+main(int argc, const char** argv)
+
 {
 	gdCache_head_t *cacheTable;
 	int elem, key;
 
 	cacheTable = gdCacheCreate(3, cacheTest, cacheFetch, cacheRelease);
 	if(!cacheTable) {
-		exit(1);
+		return 1;
 	}
 
 	key = 20;

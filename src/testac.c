@@ -13,8 +13,13 @@
 void testDrawing (gdImagePtr im_in,
 		  double scale, int blending, int palette, char *filename);
 
+
+#if defined(BUILD_MONOLITHIC)
+#define main          gd_testac_main
+#endif
+
 int
-main (int argc, char *argv[])
+main (int argc, const char **argv)
 {
 	/* Input and output files */
 	FILE *in;
@@ -24,7 +29,7 @@ main (int argc, char *argv[])
 
 	if (argc != 2) {
 		fprintf (stderr, "Usage: testac filename.png\n");
-		exit (1);
+		return 1;
 	}
 	/* Load original PNG, which should contain alpha channel
 	   information. We will use it in two ways: preserving it
@@ -35,7 +40,7 @@ main (int argc, char *argv[])
 	in = fopen (argv[1], "rb");
 	if (!in) {
 		fprintf (stderr, "Can't load %s.\n", argv[1]);
-		exit (1);
+		return 1;
 	} else {
 		im_in = gdImageCreateFromPng (in);
 		fclose (in);

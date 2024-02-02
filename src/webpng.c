@@ -32,7 +32,7 @@ static int opterr = 0;
 
 static const char argv0[] = "webpng";
 
-static void usage(const char *msg)
+static int usage(const char *msg)
 {
 	/* If the command failed, output an explanation. */
 	fprintf(msg == NULL ? stdout : stderr,
@@ -47,10 +47,10 @@ static void usage(const char *msg)
 		argv0);
 	if (msg)
 		fprintf(stderr, "\nError: %s\n", msg);
-	exit(msg == NULL ? 0 : 1);
+	return (msg == NULL ? 0 : 1);
 }
 
-static void err(const char *fmt, ...)
+static int err(const char *fmt, ...)
 {
 	va_list ap;
 	int e = errno;
@@ -63,11 +63,16 @@ static void err(const char *fmt, ...)
 		fprintf(stderr, ": %s", strerror(e));
 	fputs("\n", stderr);
 
-	exit(1);
+	return 1;
 }
 
+
+#if defined(BUILD_MONOLITHIC)
+#define main          gd_webpng_main
+#endif
+
 int
-main(int argc, char **argv)
+main(int argc, const char** argv)
 {
 	FILE *in;
 	FILE *out;
@@ -101,7 +106,7 @@ main(int argc, char **argv)
 			else if (strcmp(optarg, "n") == 0)
 				interlace = 0;
 			else
-				usage("-i specified without y or n");
+				return usage("-i specified without y or n");
 			write = 1;
 			break;
 
@@ -119,7 +124,7 @@ main(int argc, char **argv)
 				/* XXX: Should check for errors. */
 				trans_col = atoi(optarg);
 				if (trans_col < 0 || trans_col > 255)
-					err("-t has to be in the range of 0 and 255 (inclusive)");
+					return err("-t has to be in the range of 0 and 255 (inclusive)");
 			}
 			write = 1;
 			break;
@@ -135,24 +140,24 @@ main(int argc, char **argv)
 			break;
 
 		case 'h':
-			usage(NULL);
+			return usage(NULL);
 			break;
 		default:
 		case '?':
 			if (optind < argc && strcmp(argv[optind], "--help") == 0)
-				usage(NULL);
-			usage("unknown option");
+				return usage(NULL);
+			return usage("unknown option");
 			break;
 		}
 	}
 
 	if (got_a_flag == 0)
-		usage("missing operation flag");
+		return usage("missing operation flag");
 
 	if (argc == optind)
-		usage("missing filename");
+		return usage("missing filename");
 	else if (argc != optind + 1)
-		usage("can only specify one file");
+		return usage("can only specify one file");
 
 	infile = argv[optind];
 	if (strcmp(infile, "-") == 0) {
@@ -163,14 +168,14 @@ main(int argc, char **argv)
 		in = fopen(infile, "rb");
 
 	if (!in)
-		err("can't open file %s", infile);
+		return err("can't open file %s", infile);
 
 	/* Now load the image. */
 	im = gdImageCreateFromPng(in);
 	fclose(in);
 	/* If the load failed, it must not be a PNG file. */
 	if (!im)
-		err("%s is not a valid PNG file", infile);
+		return err("%s is not a valid PNG file", infile);
 
 	if (list_color_table) {
 		/* List the colors in the color table. */
@@ -268,7 +273,7 @@ main(int argc, char **argv)
 
 		tmpfile = calloc(1, len);
 		if (tmpfile == NULL)
-			err("could not create a tempfile");
+			return err("could not create a tempfile");
 		memcpy(tmpfile, infile, filelen);
 		strcpy(tmpfile + filelen, ".XXXXXX");
 
@@ -284,11 +289,11 @@ main(int argc, char **argv)
 		outfd = mkstemp(tmpfile);
 #endif
 		if (outfd == -1)
-			err("could not open %s", tmpfile);
+			return err("could not open %s", tmpfile);
 
 		out = fdopen(outfd, "wb");
 		if (!out)
-			err("could not open %s", tmpfile);
+			return err("could not open %s", tmpfile);
 	}
 
 	/* Write the new PNG. */
@@ -300,7 +305,7 @@ main(int argc, char **argv)
 		unlink(infile);
 		/* Rename the new to the old. */
 		if (rename(tmpfile, infile) != 0)
-			err("unable to rename %s to %s", infile, tmpfile);
+			return err("unable to rename %s to %s", infile, tmpfile);
 	}
 
 	/* Delete the image from memory. */

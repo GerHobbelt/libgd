@@ -12,6 +12,11 @@
 #include "gdfontl.h"
 #include "gdfontg.h"
 
+
+#if defined(BUILD_MONOLITHIC)
+#define main          gd_demo_main
+#endif
+
 int
 main (void)
 {

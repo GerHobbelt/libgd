@@ -7,7 +7,7 @@
 #include <string.h>
 #include "gd.h"
 
-#ifndef _WIN32
+#if !defined(_WIN32) || defined(BUILD_MONOLITHIC)
 
 /* A neat little utility which adds freetype text to
  * existing JPEG images. Type annotate -h for instructions.
@@ -16,10 +16,16 @@
 
 enum { left, center, right };
 
-int main(int argc, char *argv[])
+
+#if defined(BUILD_MONOLITHIC)
+#define main          gd_annotate_main
+#endif
+
+int
+main(int argc, const char** argv)
 {
 	gdImagePtr im;
-	char *iin, *iout;
+	const char *iin, *iout;
 	FILE *in, *out;
 	char *s;
 	size_t len;
@@ -50,7 +56,7 @@ int main(int argc, char *argv[])
 		        "location specified in the GDFONTPATH environment variable, 'font paris' is\n");
 		fprintf(stderr,
 		        "sufficient. You may also specify the full, rooted path of a font file.\n");
-		exit(1);
+		return 1;
 	}
 
 	iin = argv[1];
@@ -59,7 +65,7 @@ int main(int argc, char *argv[])
 	in = fopen(iin, "rb");
 	if(!in) {
 		fprintf(stderr, "Couldn't open %s\n", iin);
-		exit(2);
+		return 2;
 	}
 
 	im = gdImageCreateFromJpeg(in);
@@ -68,7 +74,7 @@ int main(int argc, char *argv[])
 
 	if(!im) {
 		fprintf(stderr, "%s did not load properly\n", iin);
-		exit(3);
+		return 3;
 	}
 
 	s = NULL;
@@ -127,7 +133,7 @@ int main(int argc, char *argv[])
 
 			if(sscanf(st, "%d %d %d %d", &r, &g, &b, &a) < 3) {
 				fprintf(stderr, "Bad color at line %d\n", lines);
-				exit(2);
+				return 2;
 			}
 
 			color = gdTrueColorAlpha(r, g, b, a);
@@ -140,7 +146,7 @@ int main(int argc, char *argv[])
 
 			if(sscanf(st, "%d %d", &x, &y) != 2) {
 				fprintf(stderr, "Missing coordinates at line %d\n", lines);
-				exit(3);
+				return 3;
 			}
 		} else if(!strcmp(st, "text")) {
 			int rx = x;
@@ -168,7 +174,7 @@ int main(int argc, char *argv[])
 			fontError = gdImageStringFT(im, 0, color, font, size, 0, rx, y, text);
 			if(fontError) {
 				fprintf(stderr, "Font error at line %d: %s\n", lines, fontError);
-				exit(7);
+				return 7;
 			}
 
 			y -= (bounds[7] - bounds[1]);
@@ -181,7 +187,7 @@ int main(int argc, char *argv[])
 
 badLine:
 		fprintf(stderr, "Bad syntax, line %d\n", lines);
-		exit(4);
+		return 4;
 	}
 	free(font);
 	free(s);
@@ -189,7 +195,7 @@ badLine:
 	out = fopen(iout, "wb");
 	if(!out) {
 		fprintf(stderr, "Cannot create %s\n", iout);
-		exit(5);
+		return 5;
 	}
 	gdImageJpeg(im, out, 95);
 	gdImageDestroy(im);

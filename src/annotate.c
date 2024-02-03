@@ -9,6 +9,12 @@
 
 #if !defined(_WIN32) || defined(BUILD_MONOLITHIC)
 
+// getline: when we don't have it in the RTL, we grab it from libmagic, i.e. GNU file's portability code.
+#ifndef HAVE_GETLINE
+#include <file.h>
+#endif
+
+
 /* A neat little utility which adds freetype text to
  * existing JPEG images. Type annotate -h for instructions.
  * Thanks to Joel Dubiner for supporting this work. -TBB

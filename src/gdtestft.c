@@ -1,3 +1,5 @@
+﻿// UTF-8: "Hello. こんにちは Qyjpqg," / "Hello. 縺薙ｓ縺ｫ縺｡縺ｯ Qyjpqg,"
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -36,9 +38,9 @@ main(int argc, const char** argv)
 	int x, y, sx, sy;
 	char *err;
 #ifdef JISX0208
-	char *s = "Hello. ����ɂ��� Qyjpqg,";	/* String to draw. */
+	char* s = "Hello. こんにちは Qyjpqg,";	/* String to draw. */
 #else
-	char *s = "Hello. こんにちは Qyjpqg,";	/* String to draw. */
+	char* s = "Hello. 縺薙ｓ縺ｫ縺｡縺ｯ Qyjpqg,";	/* String to draw. */
 #endif
 
 	double sz = 40.;

@@ -269,7 +269,7 @@ static void tiffWriter(gdImagePtr image, gdIOCtx *out, int bitDepth)
 	 * functions so that tiff lib writes correct bits of tiff content to
 	 * correct areas of file opened and modifieable by the gdIOCtx functions
 	 */
-	tiff = TIFFClientOpen("", "w", th,	tiff_readproc,
+	tiff = TIFFClientOpen("", "w", (thandle_t)th,	tiff_readproc,
 			      tiff_writeproc,
 			      tiff_seekproc,
 			      tiff_closeproc,
@@ -827,7 +827,7 @@ BGD_DECLARE(gdImagePtr) gdImageCreateFromTiffCtx(gdIOCtx *infile)
 		return NULL;
 	}
 
-	tif = TIFFClientOpen("", "rb", th, tiff_readproc,
+	tif = TIFFClientOpen("", "rb", (thandle_t)th, tiff_readproc,
 	                     tiff_writeproc,
 	                     tiff_seekproc,
 	                     tiff_closeproc,

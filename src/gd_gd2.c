@@ -86,7 +86,7 @@
 /* JCE - test after including gd.h so that HAVE_LIBZ can be set in
  * a config.h file included by gd.h */
 #if defined(HAVE_LIBZ) && ENABLE_GD_FORMATS
-#include <zlib.h>
+#include <zlib-ng.h>
 
 #define TRUE 1
 #define FALSE 0
@@ -293,7 +293,7 @@ fail1:
 
 static int
 _gd2ReadChunk (int offset, char *compBuf, int compSize, char *chunkBuf,
-               uLongf * chunkLen, gdIOCtx * in)
+               size_t * chunkLen, gdIOCtx * in)
 {
 	int zerr;
 
@@ -313,7 +313,7 @@ _gd2ReadChunk (int offset, char *compBuf, int compSize, char *chunkBuf,
 	         ("Got %d bytes. Uncompressing into buffer of %d bytes\n", compSize,
 	          *chunkLen));
 	zerr =
-	    uncompress ((unsigned char *) chunkBuf, chunkLen,
+	    zng_uncompress ((unsigned char *) chunkBuf, chunkLen,
 	                (unsigned char *) compBuf, compSize);
 	if (zerr != Z_OK) {
 		GD2_DBG (printf ("Error %d from uncompress\n", zerr));
@@ -420,7 +420,7 @@ BGD_DECLARE(gdImagePtr) gdImageCreateFromGd2Ctx (gdIOCtxPtr in)
 	unsigned char *chunkBuf = NULL;	/* So we can gdFree it with impunity. */
 	int chunkNum = 0;
 	int chunkMax = 0;
-	uLongf chunkLen;
+	size_t chunkLen;
 	int chunkPos = 0;
 	int compMax = 0;
 	int bytesPerPixel;
@@ -670,7 +670,7 @@ BGD_DECLARE(gdImagePtr) gdImageCreateFromGd2PartCtx (gdIOCtx * in, int srcx, int
 	unsigned char *chunkBuf = NULL;
 	int chunkNum;
 	int chunkMax = 0;
-	uLongf chunkLen;
+	size_t chunkLen;
 	int chunkPos = 0;
 	int compMax;
 	char *compBuf = NULL;
@@ -921,7 +921,7 @@ _gdImageGd2 (gdImagePtr im, gdIOCtx * out, int cs, int fmt)
 	int chunkNum = 0;
 	char *chunkData = NULL;	/* So we can gdFree it with impunity. */
 	char *compData = NULL;	/* So we can gdFree it with impunity. */
-	uLongf compLen;
+	size_t compLen;
 	int idxPos = 0;
 	int idxSize;
 	t_chunk_info *chunkIdx = NULL;
@@ -1059,7 +1059,7 @@ _gdImageGd2 (gdImagePtr im, gdIOCtx * out, int cs, int fmt)
 			};
 			if (gd2_compressed (fmt)) {
 				compLen = compMax;
-				if (compress ((unsigned char *)
+				if (zng_compress ((unsigned char *)
 				              &compData[0], &compLen,
 				              (unsigned char *) &chunkData[0],
 				              chunkLen) != Z_OK) {

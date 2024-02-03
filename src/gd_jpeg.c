@@ -65,7 +65,7 @@ static void jpeg_emit_message(j_common_ptr jpeg_info, int level)
 	jmpbuf_wrapper *jmpbufw;
 	int ignore_warning = 0;
 
-	jmpbufw = (jmpbuf_wrapper *) jpeg_info->client_data;
+	jmpbufw = (jmpbuf_wrapper *) jpeg_info->client_data_ref;
 
 	if (jmpbufw != 0) {
 		ignore_warning = jmpbufw->ignore_warning;
@@ -104,7 +104,7 @@ static void fatal_jpeg_error(j_common_ptr cinfo)
 	(*cinfo->err->format_message)(cinfo, buffer);
 	gd_error_ex(GD_WARNING, "gd-jpeg: JPEG library reports unrecoverable error: %s", buffer);
 
-	jmpbufw = (jmpbuf_wrapper *)cinfo->client_data;
+	jmpbufw = (jmpbuf_wrapper *)cinfo->client_data_ref;
 	jpeg_destroy(cinfo);
 
 	if(jmpbufw != 0) {
@@ -291,7 +291,7 @@ static int _gdImageJpegCtx(gdImagePtr im, gdIOCtx *outfile, int quality)
 	memset(&jerr, 0, sizeof(jerr));
 
 	cinfo.err = jpeg_std_error(&jerr);
-	cinfo.client_data = &jmpbufw;
+	cinfo.client_data_ref = &jmpbufw;
 
 	if(setjmp(jmpbufw.jmpbuf) != 0) {
 		/* we're here courtesy of longjmp */
@@ -582,7 +582,7 @@ BGD_DECLARE(gdImagePtr) gdImageCreateFromJpegCtxEx(gdIOCtx *infile, int ignore_w
 	jmpbufw.ignore_warning = ignore_warning;
 
 	cinfo.err = jpeg_std_error(&jerr);
-	cinfo.client_data = &jmpbufw;
+	cinfo.client_data_ref = &jmpbufw;
 
 	cinfo.err->emit_message = jpeg_emit_message;
 

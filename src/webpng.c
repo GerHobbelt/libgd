@@ -11,6 +11,10 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
+#ifdef _WIN32
+#include <io.h>
+#include <sys/stat.h>  /* _S_IREAD, _S_IWRITE */
+#endif
 #ifdef HAVE_MUPDF
 #include "mupdf/fitz.h"
 

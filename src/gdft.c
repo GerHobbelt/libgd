@@ -878,7 +878,7 @@ gdft_draw_bitmap (gdCache_head_t *tc_cache, gdImagePtr im, int fg,
  *
  * Alias of <gdFontCacheShutdown>.
  */
-BGD_DECLARE(void) gdFreeFontCache ()
+BGD_DECLARE(void) gdFreeFontCache (void)
 {
 	gdFontCacheShutdown ();
 }
@@ -893,7 +893,7 @@ BGD_DECLARE(void) gdFreeFontCache ()
  *  invoked, to avoid resource leaks. It doesn't harm to call this function
  *  multiple times.
  */
-BGD_DECLARE(void) gdFontCacheShutdown ()
+BGD_DECLARE(void) gdFontCacheShutdown (void)
 {
 	if (fontCache) {
 		gdMutexLock(gdFontCacheMutex);

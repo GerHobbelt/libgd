@@ -12,7 +12,7 @@
 /*
     Function: gdMajorVersion
 */
-BGD_DECLARE(int) gdMajorVersion()
+BGD_DECLARE(int) gdMajorVersion(void)
 {
     return GD_MAJOR_VERSION;
 }
@@ -20,7 +20,7 @@ BGD_DECLARE(int) gdMajorVersion()
 /*
     Function: gdMinorVersion
 */
-BGD_DECLARE(int) gdMinorVersion()
+BGD_DECLARE(int) gdMinorVersion(void)
 {
     return GD_MINOR_VERSION;
 }
@@ -28,7 +28,7 @@ BGD_DECLARE(int) gdMinorVersion()
 /*
     Function: gdReleaseVersion
 */
-BGD_DECLARE(int) gdReleaseVersion()
+BGD_DECLARE(int) gdReleaseVersion(void)
 {
     return GD_RELEASE_VERSION;
 }
@@ -36,13 +36,13 @@ BGD_DECLARE(int) gdReleaseVersion()
 /*
     Function: gdExtraVersion
 */
-BGD_DECLARE(const char *) gdExtraVersion() {
+BGD_DECLARE(const char *) gdExtraVersion(void) {
     return GD_EXTRA_VERSION;
 }
 
 /*
     Function: gdVersionString
 */
-BGD_DECLARE(const char *) gdVersionString() {
+BGD_DECLARE(const char *) gdVersionString(void) {
     return GD_VERSION_STRING;
 }

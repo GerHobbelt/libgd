@@ -8,6 +8,9 @@ on:
 
   workflow_dispatch:
 
+permissions: 
+  contents: read
+
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: RELWITHDEBINFO
@@ -59,6 +62,7 @@ jobs:
           libheif:p
           libraqm:p
           libavif:p
+          libimagequant:p
           xpm-nox:p
           cmake:p
           ninja:p

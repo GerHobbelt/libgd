@@ -1531,7 +1531,15 @@ static void *malloc16(size_t size)
 	void *p;
 	return posix_memalign(&p, 16, size) == 0 ? p : NULL;
 #else
-	return _aligned_malloc(16, size);
+	return _aligned_malloc(size, 16);
+#endif
+}
+static void free16(void *ptr)
+{
+#ifndef _WIN32
+	free(ptr);
+#else
+	_aligned_free(ptr);
 #endif
 }
 #endif
@@ -1614,7 +1622,7 @@ static int gdImageTrueColorToPaletteBody (gdImagePtr oim, int dither, int colors
 #ifdef HAVE_LIBIMAGEQUANT
 	if (oim->paletteQuantizationMethod == GD_QUANT_DEFAULT ||
 	        oim->paletteQuantizationMethod == GD_QUANT_LIQ) {
-		liq_attr *attr = liq_attr_create_with_allocator(malloc16, free);
+		liq_attr *attr = liq_attr_create_with_allocator(malloc16, free16);
 		liq_image *image;
 		liq_result *remap;
 		int remapped_ok = 0;

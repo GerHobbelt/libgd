@@ -1,16 +1,16 @@
 #ifndef GDHELPERS_H
 #define GDHELPERS_H 1
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 	/* sys/types.h is needed for size_t on Sparc-SunOS-4.1 */
 #ifndef _WIN32_WCE
 #include <sys/types.h>
 #else
 #include <stdlib.h>
 #endif /* _WIN32_WCE */
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 	/* TBB: strtok_r is not universal; provide an implementation of it. */
 
@@ -43,6 +43,7 @@ extern "C" {
 # define gdMutexUnlock(x)
 #elif defined(_WIN32)
 	/* 2.0.18: must include windows.h to get CRITICAL_SECTION. */
+# include <winsock2.h>   // [GHo] fixes issues elsewhere, e.g. spdlog, when this header file is loaded before another, which loads winsock2.h or (*shudder*) winsock.h, e.g. windows.h: you'll get clashes in preprocessor defines in ws2def.h vs. winsock2.h  :-((
 # include <windows.h>
 # define gdMutexDeclare(x) CRITICAL_SECTION x
 # define gdMutexSetup(x) InitializeCriticalSection(&x)
